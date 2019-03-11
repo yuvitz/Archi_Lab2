@@ -53,7 +53,39 @@ struct fun_desc
 };
  
 int main(int argc, char **argv){
-	char* carray = (char*)(malloc(5*sizeof(char)));
-	char (*f_ptr)(char) func_array ={&encrypt, &decrypt, &cprt,} 
-	quit('v');
-}
+	char empty_arr[]="";
+	char* carray = empty_arr;
+	int i;
+	int size, chosen;
+	char opt;
+	struct fun_desc func_array[] ={
+	{"Censor", censor},
+	{"Encrypt", encrypt}, 
+	{"Decrypt", decrypt}, 
+	{"Print hex", xprt}, 
+	{"Print string", cprt}, 
+	{"Get string", my_get}, 
+	{"Quit", quit},
+	{NULL, NULL}};
+	size=sizeof(func_array)/sizeof(*func_array)-1;
+
+	while(1){
+		printf("%s\n", "Please choose a function");
+		for(i=0; i<size; i++){
+			printf("%d", i);
+			printf(") %s\n", func_array[i].name);
+		}
+		opt=fgetc(stdin);
+		chosen= opt-'0';
+		printf("%s", "Option: ");
+		printf("%c\n", opt);
+		if((chosen>=0) & (chosen <=6))
+			printf("%s\n", "Within bounds");
+		else
+			printf("%s\n", "Not within bounds");
+
+		char* new_arr=map(carray, size, func_array[chosen].f);
+		carray=new_arr;	
+		free(new_arr);
+	}
+}	
